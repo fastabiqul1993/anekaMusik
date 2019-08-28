@@ -1,19 +1,18 @@
 import React, { Component, Fragment } from "react";
 import { Card, Button, Col } from "react-bootstrap";
 
-class Cards extends Component {
+class CardsHome extends Component {
   render() {
-    const { title, image } = this.props.data;
+    const { image, type } = this.props.data;
     return (
       <Fragment>
-        <Col sm={3} style={{ padding: "15px" }}>
+        <Col sm={3} className="card-col" style={{ padding: "1rem" }}>
           <Card
             className="shadow"
             style={{
-              // width: "18rem",
               backgroundColor: "#F5D372",
               border: "none",
-              padding: "15px"
+              padding: "1rem"
             }}
           >
             <Card.Img
@@ -27,8 +26,13 @@ class Cards extends Component {
               src={image}
             />
             <Card.Body variant="dark">
-              <Card.Title>{title}</Card.Title>
-              <Button variant="primary">Go somewhere</Button>
+              <Card.Title>{type}</Card.Title>
+              <Button
+                onClick={() => this.props.categoryDetail(type)}
+                variant="primary"
+              >
+                Go to {type}
+              </Button>
             </Card.Body>
           </Card>
         </Col>
@@ -37,4 +41,4 @@ class Cards extends Component {
   }
 }
 
-export default Cards;
+export default CardsHome;

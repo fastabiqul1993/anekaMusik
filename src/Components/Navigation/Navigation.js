@@ -11,7 +11,7 @@ function Navigation() {
       <Navbar fixed="top" className="menPrimary">
         <Container>
           <Navbar.Brand href="#home">
-            <img className="menLogo" src={logo}></img>
+            <img className="menLogo" src={logo} alt="logo"></img>
           </Navbar.Brand>
           <Button className="float-right" variant="outline-dark">
             Login

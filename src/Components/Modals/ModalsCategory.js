@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import uuid from "uuid";
-import { Modal, Button, Form, Row } from "react-bootstrap";
+import { Modal, Button, Form } from "react-bootstrap";
 
-class Modals extends Component {
+import dumImg from "../../Assets/img/gDum.png";
+
+class ModalsCategory extends Component {
   state = {
-    newData: { id: uuid.v4() }
+    newData: { id: uuid.v4(), image: dumImg }
   };
 
-  addData = e => {
+  onChange = e => {
     const newData = { ...this.state.newData };
     newData[e.target.name] = e.target.value;
     this.setState({
@@ -15,14 +17,14 @@ class Modals extends Component {
     });
   };
 
-  onAdd = e => {
-    this.props.addnewitem(this.state.newData);
-    this.setState({ newData: {} });
+  onSubmit = () => {
+    this.props.data.push(this.state.newData);
+    this.props.onHide();
+    this.setState({ newData: { id: uuid.v4(), image: dumImg } });
   };
 
   render() {
     const { props } = this;
-
     return (
       <Modal
         {...props}
@@ -41,18 +43,14 @@ class Modals extends Component {
               <Form.Label>Product Name</Form.Label>
               <Form.Control
                 type="text"
-                name="productName"
-                onChange={this.addData}
+                name="title"
+                onChange={this.onChange}
                 placeholder="Product Name"
               />
             </Form.Group>
             <Form.Group controlId="exampleForm.ControlSelect1">
               <Form.Label>Category</Form.Label>
-              <Form.Control
-                name="catergory"
-                onChange={this.addData}
-                as="select"
-              >
+              <Form.Control name="type" onChange={this.onChange} as="select">
                 <option>Select Category...</option>
                 <option>Bass</option>
                 <option>Guitar</option>
@@ -63,7 +61,7 @@ class Modals extends Component {
             </Form.Group>
             <Form.Group controlId="exampleForm.ControlSelect1">
               <Form.Label>Branch</Form.Label>
-              <Form.Control name="branch" onChange={this.addData} as="select">
+              <Form.Control name="branch" onChange={this.onChange} as="select">
                 <option>Select Branch...</option>
                 {props.data.map(d => (
                   <option key={d.id}>{d.branch}</option>
@@ -75,7 +73,7 @@ class Modals extends Component {
               <Form.Control
                 type="text"
                 name="qty"
-                onChange={this.addData}
+                onChange={this.onChange}
                 placeholder="Quantity"
               />
             </Form.Group>
@@ -84,7 +82,7 @@ class Modals extends Component {
               <Form.Control
                 type="text"
                 name="price"
-                onChange={this.addData}
+                onChange={this.onChange}
                 placeholder="Price"
               />
             </Form.Group>
@@ -93,25 +91,21 @@ class Modals extends Component {
               <Form.Control
                 as="textarea"
                 name="description"
-                onChange={this.addData}
+                onChange={this.onChange}
                 rows="3"
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            variant="outline-secondary"
-            onClick={props.onHide}
-            onAdd={this.onAdd}
-          >
+          <Button variant="outline-secondary" onClick={props.onHide}>
             Cancel
           </Button>
-          <Button onClick={this.addData}>Submit</Button>
+          <Button onClick={this.onSubmit}>Submit</Button>
         </Modal.Footer>
       </Modal>
     );
   }
 }
 
-export default Modals;
+export default ModalsCategory;

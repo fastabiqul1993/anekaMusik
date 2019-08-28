@@ -1,10 +1,13 @@
 import React, { Component, Fragment } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 import DummyHome from "./Data/DummyHome";
 import DummyViolin from "./Data/DummyViolin";
 
 import Navitagion from "./Components/Navigation/Navigation";
 import Footer from "./Components/Footer/Footer";
-import Home from "./Components/Home";
+import Home from "./Views/Home/Home";
+import Category from "./Views/Category/Category";
 import "./App.css";
 
 class App extends Component {
@@ -16,23 +19,34 @@ class App extends Component {
     };
   }
 
-  addItem = newItem => {
-    this.setState({ dummyViolin: [...this.state.dummyViolin, newItem] });
-  };
-
   render() {
     const { dummyHome, dummyViolin } = this.state;
 
     return (
-      <Fragment>
+      <Router>
         <Navitagion />
-        <Home
-          homesData={dummyHome}
-          violinData={dummyViolin}
-          addItem={this.addItem}
-        />
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={props => (
+              <Home homesData={dummyHome} violinData={dummyViolin} {...props} />
+            )}
+          />
+          <Route
+            exact
+            path="/category"
+            render={() => (
+              <Category violinData={dummyViolin} addItem={this.addItem} />
+            )}
+          />
+          <Route
+            path="/category/:type"
+            render={props => <Category violinData={dummyViolin} {...props} />}
+          />
+        </Switch>
         <Footer />
-      </Fragment>
+      </Router>
     );
   }
 }
