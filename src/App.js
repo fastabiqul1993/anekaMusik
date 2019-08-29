@@ -4,10 +4,12 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import DummyHome from "./Data/DummyHome";
 import DummyViolin from "./Data/DummyViolin";
 
-import Navitagion from "./Components/Navigation/Navigation";
+import Navigation from "./Components/Navigation/Navigation";
 import Footer from "./Components/Footer/Footer";
 import Home from "./Views/Home/Home";
 import Category from "./Views/Category/Category";
+import ProductDetail from "./Views/ProductDetail/ProductDetail";
+
 import "./App.css";
 
 class App extends Component {
@@ -24,7 +26,7 @@ class App extends Component {
 
     return (
       <Router>
-        <Navitagion />
+        <Navigation />
         <Switch>
           <Route
             exact
@@ -43,6 +45,12 @@ class App extends Component {
           <Route
             path="/category/:type"
             render={props => <Category violinData={dummyViolin} {...props} />}
+          />
+          <Route
+            path="/detail/:id"
+            render={props => (
+              <ProductDetail violinData={dummyViolin} {...props} />
+            )}
           />
         </Switch>
         <Footer />

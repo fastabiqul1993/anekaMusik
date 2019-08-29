@@ -23,6 +23,10 @@ class Category extends Component {
       setModalShow: !this.state.setModalShow
     });
 
+  handleCategory = id => {
+    this.props.history.push(`/detail/${id}`);
+  };
+
   render() {
     const { search, modalShow, categoryData } = this.state;
     const dataClick = this.props.match.params.type;
@@ -37,7 +41,6 @@ class Category extends Component {
           {/* Modal button */}
           <Button
             className="but-category"
-            // style={{ color: "#FFF" }}
             variant="warning"
             onClick={this.modalToggle}
           >
@@ -51,7 +54,13 @@ class Category extends Component {
           {/* Card */}
           <Row>
             {filtered.length > 0 ? (
-              filtered.map(dummy => <Cards key={dummy.id} data={dummy} />)
+              filtered.map(dummy => (
+                <Cards
+                  catDetail={this.handleCategory}
+                  key={dummy.id}
+                  data={dummy}
+                />
+              ))
             ) : (
               <Col sm={12}>
                 <Alert className="mt-3" variant="danger">
