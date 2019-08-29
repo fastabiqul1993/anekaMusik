@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
 import { Button, Container, Row, Alert, Col } from "react-bootstrap";
 
 import Search from "../../Components/Search/Search";
@@ -28,7 +27,7 @@ class Category extends Component {
   };
 
   render() {
-    const { search, modalShow, categoryData } = this.state;
+    const { modalShow, categoryData } = this.state;
     const dataClick = this.props.match.params.type;
     const filtered = categoryData.filter(data =>
       data.type.toLowerCase().includes(dataClick.toLowerCase())

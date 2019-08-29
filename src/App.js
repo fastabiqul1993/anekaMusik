@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import DummyHome from "./Data/DummyHome";
@@ -35,13 +35,13 @@ class App extends Component {
               <Home homesData={dummyHome} violinData={dummyViolin} {...props} />
             )}
           />
-          <Route
+          {/* <Route
             exact
             path="/category"
             render={() => (
               <Category violinData={dummyViolin} addItem={this.addItem} />
             )}
-          />
+          /> */}
           <Route
             path="/category/:type"
             render={props => <Category violinData={dummyViolin} {...props} />}

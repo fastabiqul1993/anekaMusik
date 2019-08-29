@@ -31,7 +31,7 @@ class CardsCategory extends Component {
                 onClick={() => this.props.catDetail(id)}
                 variant="primary"
               >
-                Go somewhere
+                Show details
               </Button>
             </Card.Body>
           </Card>
