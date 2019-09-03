@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { getProductById } from "../../Redux/Action/product";
 import { Redirect } from "react-router-dom";
 import { Button, Container, Col, Row, Form, Card } from "react-bootstrap";
+import Axios from "axios";
 
 import "./ProductDetail.css";
 
@@ -10,6 +11,7 @@ class ProductDetail extends Component {
   state = {
     detailProduct: {},
     branchName: "",
+    newData: {},
     isRedirect: false
   };
 
@@ -27,43 +29,35 @@ class ProductDetail extends Component {
     const newData = { ...this.state.newData };
     newData[e.target.name] = e.target.value;
     this.setState({
-      newData: newData
+      newData
     });
   };
 
   updateData = id => {
-    let updateData = this.state.data.map((target, index) => {
-      if (target.id === id) {
-        this.state.data.splice(index, 1, this.state.newData);
-      }
-    });
+    Axios.patch(`http://localhost:3000/product/${id}`, this.state.newData);
 
-    this.setState({ data: updateData, isRedirect: true });
+    // this.setState({ isRedirect: true });
   };
 
   remove = id => {
-    let deleted = this.state.data.map((target, index) => {
-      if (target.id === id) {
-        this.state.data.splice(index, 1);
-      }
-    });
-
-    this.setState({ data: deleted, isRedirect: true });
+    Axios.delete(`http://localhost:3000/product/${id}`);
+    this.setState({ isRedirect: true });
   };
 
-  initData = data => {
-    this.setState({
-      updateData: {
-        id: data.id,
-        title: data.title,
-        description: data.description,
-        image: data.image
-      }
-    });
-  };
+  // initData = data => {
+  //   this.setState({
+  //     updateData: {
+  //       id: data.id,
+  //       title: data.title,
+  //       description: data.description,
+  //       image: data.image
+  //     }
+  //   });
+  // };
 
   render() {
-    const { detailProduct, branchName, isRedirect } = this.state;
+    const { detailProduct, branchName, isRedirect, newData } = this.state;
+    console.log(newData);
     if (isRedirect) {
       return <Redirect to={`/category/${detailProduct.CategoryId}`} />;
     }

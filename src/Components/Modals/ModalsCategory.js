@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Axios from "axios";
-import { all } from "q";
 
 class ModalsCategory extends Component {
   state = {
