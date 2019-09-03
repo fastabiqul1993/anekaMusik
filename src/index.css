@@ -1,4 +1,6 @@
 body {
+  height: 100vh;
+  width: 100vw;
   position: relative;
   padding-bottom: 6rem;
   min-height: 100%;

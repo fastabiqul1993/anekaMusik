@@ -1,22 +1,27 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import { getProductById } from "../../Redux/Action/product";
+import { Redirect } from "react-router-dom";
 import { Button, Container, Col, Row, Form, Card } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
 
 import "./ProductDetail.css";
 
 class ProductDetail extends Component {
-  constructor(props) {
-    const target = props.violinData.find(function(data) {
-      return data.id === props.match.params.id;
+  state = {
+    detailProduct: {},
+    branchName: "",
+    isRedirect: false
+  };
+
+  componentDidMount = async () => {
+    await this.props.dispatch(
+      getProductById(Number(this.props.match.params.id))
+    );
+    this.setState({
+      detailProduct: this.props.data.productById,
+      branchName: this.props.data.productById.Branch.name
     });
-    super(props);
-    this.state = {
-      data: props.violinData,
-      newData: target,
-      oldData: target,
-      isRedirect: false
-    };
-  }
+  };
 
   onChange = e => {
     const newData = { ...this.state.newData };
@@ -58,43 +63,42 @@ class ProductDetail extends Component {
   };
 
   render() {
-    const { oldData, isRedirect } = this.state;
-
+    const { detailProduct, branchName, isRedirect } = this.state;
     if (isRedirect) {
-      return <Redirect to={`/category/${oldData.type}`} />;
+      return <Redirect to={`/category/${detailProduct.CategoryId}`} />;
     }
     return (
       <Fragment>
         <Container className="detail">
-          <Row key={oldData.id}>
+          <Row key={detailProduct.id}>
             <Col sm={3}>
               <Card style={{ width: "18rem" }}>
-                <Card.Img variant="top" src={oldData.image} />
+                <Card.Img variant="top" src={detailProduct.img} />
               </Card>
             </Col>
             <Col sm={8}>
               <Row>
                 <Col sm={9}>
-                  <h3>{oldData.title}</h3>
+                  <h3>{detailProduct.name}</h3>
                 </Col>
                 <Col sm={3}>
                   <Button
                     className="but-home"
                     variant="primary"
-                    onClick={() => this.updateData(oldData.id)}
+                    onClick={() => this.updateData(detailProduct.id)}
                   >
                     Edit
                   </Button>
                   <Button
                     className="but-home"
                     variant="danger"
-                    onClick={() => this.remove(oldData.id)}
+                    onClick={() => this.remove(detailProduct.id)}
                   >
                     Delete
                   </Button>
                 </Col>
                 <Col sm={12}>
-                  <h4>{oldData.description}</h4>
+                  <h4>{detailProduct.description}</h4>
                 </Col>
                 <Col sm={12}>
                   <Form>
@@ -105,7 +109,7 @@ class ProductDetail extends Component {
                       <Col sm="10">
                         <Form.Control
                           type="text"
-                          placeholder={oldData.branch}
+                          placeholder={branchName}
                           name="branch"
                           onChange={this.onChange}
                         />
@@ -119,7 +123,7 @@ class ProductDetail extends Component {
                       <Col sm="10">
                         <Form.Control
                           type="text"
-                          placeholder={oldData.qty}
+                          placeholder={detailProduct.qty}
                           name="qty"
                           onChange={this.onChange}
                         />
@@ -133,7 +137,7 @@ class ProductDetail extends Component {
                       <Col sm="10">
                         <Form.Control
                           type="text"
-                          placeholder={oldData.price}
+                          placeholder={detailProduct.price}
                           name="price"
                           onChange={this.onChange}
                         />
@@ -144,11 +148,16 @@ class ProductDetail extends Component {
               </Row>
             </Col>
           </Row>
-          {/* ); // })} */}
         </Container>
       </Fragment>
     );
   }
 }
 
-export default ProductDetail;
+const mapStateToProps = state => {
+  return {
+    data: state.Product
+  };
+};
+
+export default connect(mapStateToProps)(ProductDetail);

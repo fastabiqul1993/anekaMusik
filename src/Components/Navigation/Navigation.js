@@ -10,7 +10,7 @@ function Navigation() {
     <Fragment>
       <Navbar fixed="top" className="menPrimary">
         <Container>
-          <Navbar.Brand href="#home">
+          <Navbar.Brand>
             <Link to={`/`}>
               <img className="menLogo" src={logo} alt="logo"></img>
             </Link>

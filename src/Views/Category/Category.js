@@ -1,4 +1,8 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import { getProduct } from "../../Redux/Action/product";
+import { getBranch } from "../../Redux/Action/branch";
+import { getCategory } from "../../Redux/Action/category";
 import { Button, Container, Row, Alert, Col } from "react-bootstrap";
 
 import Search from "../../Components/Search/Search";
@@ -11,7 +15,22 @@ class Category extends Component {
     modalShow: false,
     setModalShow: false,
     search: "",
-    categoryData: this.props.violinData
+    CategoryId: this.props.match.params.CategoryId,
+    categoryData: [],
+    categories: [],
+    branchs: []
+  };
+
+  componentDidMount = async () => {
+    await this.props.dispatch(getBranch());
+    await this.props.dispatch(getCategory());
+    await this.props.dispatch(getProduct(this.state.CategoryId));
+
+    this.setState({
+      categoryData: this.props.rproduct.productList,
+      categories: this.props.rcategory.categoryList,
+      branchs: this.props.rbranch.branchList
+    });
   };
 
   onChange = e => this.setState({ search: e.target.value });
@@ -27,11 +46,7 @@ class Category extends Component {
   };
 
   render() {
-    const { modalShow, categoryData } = this.state;
-    const dataClick = this.props.match.params.type;
-    const filtered = categoryData.filter(data =>
-      data.type.toLowerCase().includes(dataClick.toLowerCase())
-    );
+    const { modalShow, categoryData, categories, branchs } = this.state;
     return (
       <Fragment>
         <Container className="category">
@@ -47,17 +62,18 @@ class Category extends Component {
           </Button>
           <Modals
             show={modalShow}
+            branchs={branchs}
+            categories={categories}
             onHide={this.modalToggle}
-            data={categoryData}
           ></Modals>
           {/* Card */}
           <Row>
-            {filtered.length > 0 ? (
-              filtered.map(dummy => (
+            {categoryData.length > 0 ? (
+              categoryData.map(singleCategory => (
                 <Cards
                   catDetail={this.handleCategory}
-                  key={dummy.id}
-                  data={dummy}
+                  key={singleCategory.id}
+                  data={singleCategory}
                 />
               ))
             ) : (
@@ -75,4 +91,12 @@ class Category extends Component {
   }
 }
 
-export default Category;
+const mapStateToProps = state => {
+  return {
+    rproduct: state.Product,
+    rbranch: state.Branch,
+    rcategory: state.Category
+  };
+};
+
+export default connect(mapStateToProps)(Category);

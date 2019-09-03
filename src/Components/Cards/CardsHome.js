@@ -3,7 +3,7 @@ import { Card, Button, Col } from "react-bootstrap";
 
 class CardsHome extends Component {
   render() {
-    const { image, type } = this.props.data;
+    const { img, name, id } = this.props.data;
     return (
       <Fragment>
         <Col sm={3} className="card-col" style={{ padding: "1rem" }}>
@@ -23,15 +23,15 @@ class CardsHome extends Component {
                 margin: "auto"
               }}
               variant="top"
-              src={image}
+              src={img}
             />
             <Card.Body variant="dark">
-              <Card.Title>{type}</Card.Title>
+              <Card.Title>{name}</Card.Title>
               <Button
-                onClick={() => this.props.categoryDetail(type)}
+                onClick={() => this.props.categoryDetail(id)}
                 variant="primary"
               >
-                Go to {type}
+                Go to {name}
               </Button>
             </Card.Body>
           </Card>

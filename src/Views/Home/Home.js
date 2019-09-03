@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import { getCategory } from "../../Redux/Action/category";
 import { Button, Container, Row, Alert, Col } from "react-bootstrap";
 
 import Search from "../../Components/Search/Search";
@@ -11,7 +13,14 @@ class Home extends Component {
     modalShow: false,
     setModalShow: false,
     search: "",
-    homesData: this.props.homesData
+    homesData: []
+  };
+
+  componentDidMount = async () => {
+    await this.props.dispatch(getCategory());
+    this.setState({
+      homesData: this.props.data.categoryList
+    });
   };
 
   onChange = e => this.setState({ search: e.target.value });
@@ -22,15 +31,16 @@ class Home extends Component {
       setModalShow: !this.state.setModalShow
     });
 
-  handleType = type => {
-    this.props.history.push(`/category/${type}`);
+  handleType = CategoryId => {
+    this.props.history.push(`/category/${CategoryId}`);
   };
 
   render() {
     const { search, modalShow, homesData } = this.state;
     const filtered = homesData.filter(data =>
-      data.type.toLowerCase().includes(search.toLowerCase())
+      data.name.toLowerCase().includes(search.toLowerCase())
     );
+
     return (
       <Fragment>
         <Container className="home">
@@ -53,11 +63,11 @@ class Home extends Component {
           {/* Card */}
           <Row>
             {filtered.length > 0 ? (
-              filtered.map(dummy => (
+              filtered.map(category => (
                 <Cards
                   categoryDetail={this.handleType}
-                  key={dummy.id}
-                  data={dummy}
+                  key={category.id}
+                  data={category}
                 />
               ))
             ) : (
@@ -75,4 +85,10 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const mapStateToProps = state => {
+  return {
+    data: state.Category
+  };
+};
+
+export default connect(mapStateToProps)(Home);
