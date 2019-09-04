@@ -7,7 +7,8 @@ class ModalsCategory extends Component {
     newData: {
       img:
         "https://vignette.wikia.nocookie.net/scribblenauts/images/4/42/Crash_Test_Dummy.png/revision/latest/scale-to-width-down/133?cb=20130309213400"
-    }
+    },
+    tempData: []
   };
 
   onChange = e => {
@@ -21,10 +22,11 @@ class ModalsCategory extends Component {
   onSubmit = () => {
     Axios.post("http://localhost:3000/product", this.state.newData)
       .then(() => {
-        alert("Add success");
+        this.props.fixproduct();
+        alert("Add product success");
       })
       .catch(() => {
-        alert("add failed");
+        alert("Add product failed");
       });
     this.props.onHide();
     this.setState({
@@ -37,7 +39,6 @@ class ModalsCategory extends Component {
 
   render() {
     const { props } = this;
-    console.log("ini newData", this.state.newData);
     return (
       <Modal
         {...props}
@@ -131,12 +132,5 @@ class ModalsCategory extends Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    rbranch: state.Branch,
-    rcategory: state.Category
-  };
-};
 
 export default ModalsCategory;

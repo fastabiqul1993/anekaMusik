@@ -44,17 +44,6 @@ class ProductDetail extends Component {
     this.setState({ isRedirect: true });
   };
 
-  // initData = data => {
-  //   this.setState({
-  //     updateData: {
-  //       id: data.id,
-  //       title: data.title,
-  //       description: data.description,
-  //       image: data.image
-  //     }
-  //   });
-  // };
-
   render() {
     const { detailProduct, branchName, isRedirect, newData } = this.state;
     console.log(newData);

@@ -24,13 +24,23 @@ class Category extends Component {
   componentDidMount = async () => {
     await this.props.dispatch(getBranch());
     await this.props.dispatch(getCategory());
-    await this.props.dispatch(getProduct(this.state.CategoryId));
+    this.getFixProduct();
 
     this.setState({
-      categoryData: this.props.rproduct.productList,
       categories: this.props.rcategory.categoryList,
       branchs: this.props.rbranch.branchList
     });
+  };
+
+  getFixProduct = async () => {
+    await this.props
+      .dispatch(getProduct(this.state.CategoryId))
+
+      .then(() => {
+        this.setState({
+          categoryData: this.props.rproduct.productList
+        });
+      });
   };
 
   onChange = e => this.setState({ search: e.target.value });
@@ -62,6 +72,7 @@ class Category extends Component {
           </Button>
           <Modals
             show={modalShow}
+            fixproduct={this.getFixProduct}
             branchs={branchs}
             categories={categories}
             onHide={this.modalToggle}
