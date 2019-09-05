@@ -21,6 +21,12 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={props => <Home {...props} />} />
             <Route
+              exact
+              path="/category/search/:search"
+              render={props => <Category {...props} />}
+            />
+            <Route
+              exact
               path="/category/:CategoryId"
               render={props => <Category {...props} />}
             />

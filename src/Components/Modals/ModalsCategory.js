@@ -22,7 +22,7 @@ class ModalsCategory extends Component {
   onSubmit = () => {
     Axios.post("http://localhost:3000/product", this.state.newData)
       .then(() => {
-        this.props.fixproduct();
+        // this.props.fixproduct();
         alert("Add product success");
       })
       .catch(() => {

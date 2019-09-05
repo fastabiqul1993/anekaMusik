@@ -3,9 +3,16 @@ import { connect } from "react-redux";
 import { getProduct } from "../../Redux/Action/product";
 import { getBranch } from "../../Redux/Action/branch";
 import { getCategory } from "../../Redux/Action/category";
-import { Button, Container, Row, Alert, Col } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Row,
+  Alert,
+  Col,
+  Pagination
+} from "react-bootstrap";
 
-import Search from "../../Components/Search/Search";
+import Search from "../../Components/Search/SearchCategory";
 import Cards from "../../Components/Cards/CardsCategory";
 import Modals from "../../Components/Modals/ModalsCategory";
 import "./Category.css";
@@ -14,17 +21,19 @@ class Category extends Component {
   state = {
     modalShow: false,
     setModalShow: false,
-    search: "",
+    search: this.props.match.params.search,
     CategoryId: this.props.match.params.CategoryId,
     categoryData: [],
     categories: [],
-    branchs: []
+    branchs: [],
+    getPage: 1,
+    totalPage: 0
   };
 
   componentDidMount = async () => {
     await this.props.dispatch(getBranch());
     await this.props.dispatch(getCategory());
-    this.getFixProduct();
+    await this.getFixProduct();
 
     this.setState({
       categories: this.props.rcategory.categoryList,
@@ -33,17 +42,47 @@ class Category extends Component {
   };
 
   getFixProduct = async () => {
-    await this.props
-      .dispatch(getProduct(this.state.CategoryId))
+    const catId = this.state.CategoryId;
+    const searching = this.state.search;
+    const getPage = this.state.getPage;
 
+    await this.props
+      .dispatch(getProduct(catId, getPage, searching))
       .then(() => {
         this.setState({
-          categoryData: this.props.rproduct.productList
+          categoryData: this.props.rproduct.productList,
+          totalPage: this.props.rproduct.totalProduct
         });
+      })
+      .catch(() => {
+        alert("Something went wrong check your redux");
       });
   };
 
   onChange = e => this.setState({ search: e.target.value });
+
+  onNext = async () => {
+    const maxPaginate = Math.round(this.state.totalPage / 2);
+    if (this.state.getPage < maxPaginate) {
+      let nextPage = this.state.getPage + 1;
+      await this.setState({ getPage: nextPage });
+
+      await this.getFixProduct();
+    } else {
+      alert("max next");
+    }
+  };
+
+  onPrev = async () => {
+    if (this.state.getPage > 1) {
+      let prevPage = this.state.getPage - 1;
+      await this.setState({ getPage: prevPage });
+
+      await this.getFixProduct();
+    } else {
+      alert("max prev");
+    }
+  };
 
   modalToggle = () =>
     this.setState({
@@ -57,11 +96,12 @@ class Category extends Component {
 
   render() {
     const { modalShow, categoryData, categories, branchs } = this.state;
+    // console.log(this.state.getPage);
     return (
       <Fragment>
         <Container className="category">
           {/* Search component */}
-          <Search search={this.onChange} />
+          <Search history={this.props.history} />
           {/* Modal button */}
           <Button
             className="but-category"
@@ -72,7 +112,7 @@ class Category extends Component {
           </Button>
           <Modals
             show={modalShow}
-            fixproduct={this.getFixProduct}
+            // fixproduct={this.getFixProduct}
             branchs={branchs}
             categories={categories}
             onHide={this.modalToggle}
@@ -80,7 +120,7 @@ class Category extends Component {
           {/* Card */}
           <Row>
             {categoryData.length > 0 ? (
-              categoryData.map(singleCategory => (
+              this.props.rproduct.productList.map(singleCategory => (
                 <Cards
                   catDetail={this.handleCategory}
                   key={singleCategory.id}
@@ -96,6 +136,10 @@ class Category extends Component {
               </Col>
             )}
           </Row>
+          <Pagination>
+            <Pagination.Prev onClick={() => this.onPrev()} />
+            <Pagination.Next onClick={() => this.onNext()} />
+          </Pagination>
         </Container>
       </Fragment>
     );

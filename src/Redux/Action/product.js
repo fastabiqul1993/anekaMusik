@@ -1,14 +1,13 @@
 import Axios from "axios";
 
-export const getProduct = (CategoryId, page, limit, search) => {
+export const getProduct = (CategoryId, page, search) => {
   return {
     type: "GET_PRODUCT",
     payload: Axios.get(`http://localhost:3000/product`, {
       params: {
-        CategoryId,
-        page,
-        limit,
-        search
+        CategoryId: CategoryId,
+        page: page,
+        search: search
       }
     })
   };

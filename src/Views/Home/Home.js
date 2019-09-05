@@ -12,7 +12,6 @@ class Home extends Component {
   state = {
     modalShow: false,
     setModalShow: false,
-    search: "",
     homesData: []
   };
 
@@ -22,8 +21,6 @@ class Home extends Component {
       homesData: this.props.data.categoryList
     });
   };
-
-  onChange = e => this.setState({ search: e.target.value });
 
   modalToggle = () =>
     this.setState({
@@ -36,16 +33,12 @@ class Home extends Component {
   };
 
   render() {
-    const { search, modalShow, homesData } = this.state;
-    const filtered = homesData.filter(data =>
-      data.name.toLowerCase().includes(search.toLowerCase())
-    );
-
+    const { modalShow, homesData } = this.state;
+    // console.log(this.props.location.pathname);
     return (
       <Fragment>
         <Container className="home">
-          {/* Search component */}
-          <Search search={this.onChange} />
+          <Search history={this.props.history} />
           {/* Modal button */}
           <Button
             className="but-home"
@@ -62,8 +55,8 @@ class Home extends Component {
           ></Modals>
           {/* Card */}
           <Row>
-            {filtered.length > 0 ? (
-              filtered.map(category => (
+            {homesData.length > 0 ? (
+              homesData.map(category => (
                 <Cards
                   categoryDetail={this.handleType}
                   key={category.id}

@@ -35,8 +35,6 @@ class ProductDetail extends Component {
 
   updateData = id => {
     Axios.patch(`http://localhost:3000/product/${id}`, this.state.newData);
-
-    // this.setState({ isRedirect: true });
   };
 
   remove = id => {
@@ -45,8 +43,7 @@ class ProductDetail extends Component {
   };
 
   render() {
-    const { detailProduct, branchName, isRedirect, newData } = this.state;
-    console.log(newData);
+    const { detailProduct, branchName, isRedirect } = this.state;
     if (isRedirect) {
       return <Redirect to={`/category/${detailProduct.CategoryId}`} />;
     }

@@ -1,5 +1,6 @@
 const initialState = {
   productList: [],
+  totalProduct: 0,
   productById: {},
   isLoading: false,
   isFulfilled: false,
@@ -26,7 +27,8 @@ const Product = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isFulfilled: true,
-        productList: action.payload.data.response.rows
+        productList: action.payload.data.response.rows,
+        totalProduct: action.payload.data.response.count
       };
 
     case "GET_PRODUCT_ID_PENDING":

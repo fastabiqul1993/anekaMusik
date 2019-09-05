@@ -11,7 +11,9 @@ class Search extends Component {
 
   onPress = e => {
     if (e.key === "Enter") {
-      this.props.history.push(`/category/search/${this.state.search}`);
+      e.preventDefault();
+      // this.props.history.push(`/category/search/${this.state.search}`);
+      window.location.replace(`/category/search/${this.state.search}`);
     }
   };
 
