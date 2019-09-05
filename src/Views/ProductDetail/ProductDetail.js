@@ -2,7 +2,8 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { getProductById } from "../../Redux/Action/product";
 import { Redirect } from "react-router-dom";
-import { Button, Container, Col, Row, Form, Card } from "react-bootstrap";
+import { Button, Container, Col, Row, Form, Badge } from "react-bootstrap";
+import Search from "../../Components/Search/Search";
 import Axios from "axios";
 
 import "./ProductDetail.css";
@@ -35,10 +36,12 @@ class ProductDetail extends Component {
 
   updateData = id => {
     Axios.patch(`http://localhost:3000/product/${id}`, this.state.newData);
+    alert("Update success");
   };
 
   remove = id => {
     Axios.delete(`http://localhost:3000/product/${id}`);
+    alert("Delete success");
     this.setState({ isRedirect: true });
   };
 
@@ -50,22 +53,27 @@ class ProductDetail extends Component {
     return (
       <Fragment>
         <Container className="detail">
-          <Row key={detailProduct.id}>
-            <Col sm={3}>
-              <Card style={{ width: "18rem" }}>
-                <Card.Img variant="top" src={detailProduct.img} />
-              </Card>
+          <Search history={this.props.history} />
+          <Row>
+            <Col md={3}>
+              <img src={detailProduct.img} style={{ maxWidth: "250px" }} />
             </Col>
-            <Col sm={8}>
+            <Col style={{ height: "500px" }} md={{ offset: 1 }}>
               <Row>
-                <Col sm={9}>
+                <Col sm={2}>
                   <h3>{detailProduct.name}</h3>
+                  {detailProduct.qty > 0 ? (
+                    <Badge variant="success">Wonten</Badge>
+                  ) : (
+                    <Badge variant="danger">Telas</Badge>
+                  )}
                 </Col>
-                <Col sm={3}>
+                <Col sm={{ offset: 7 }}>
                   <Button
                     className="but-home"
-                    variant="primary"
+                    variant="warning"
                     onClick={() => this.updateData(detailProduct.id)}
+                    style={{ marginRight: "3px" }}
                   >
                     Edit
                   </Button>
@@ -78,13 +86,15 @@ class ProductDetail extends Component {
                   </Button>
                 </Col>
                 <Col sm={12}>
-                  <h4>{detailProduct.description}</h4>
+                  <p style={{ marginTop: "30px" }}>
+                    {detailProduct.description}
+                  </p>
                 </Col>
                 <Col sm={12}>
-                  <Form>
+                  <Form style={{ marginTop: "50px" }}>
                     <Form.Group as={Row}>
                       <Form.Label column sm="2">
-                        Available in
+                        Branch
                       </Form.Label>
                       <Col sm="10">
                         <Form.Control

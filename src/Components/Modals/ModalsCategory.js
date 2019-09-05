@@ -6,7 +6,7 @@ class ModalsCategory extends Component {
   state = {
     newData: {
       img:
-        "https://vignette.wikia.nocookie.net/scribblenauts/images/4/42/Crash_Test_Dummy.png/revision/latest/scale-to-width-down/133?cb=20130309213400"
+        "http://pluspng.com/img-png/drum-hd-png-rusty-oil-drums-png-stock-by-roy3d-1024.png"
     },
     tempData: []
   };
@@ -22,7 +22,7 @@ class ModalsCategory extends Component {
   onSubmit = () => {
     Axios.post("http://localhost:3000/product", this.state.newData)
       .then(() => {
-        // this.props.fixproduct();
+        this.props.fixproduct();
         alert("Add product success");
       })
       .catch(() => {
@@ -32,7 +32,7 @@ class ModalsCategory extends Component {
     this.setState({
       newData: {
         img:
-          "https://vignette.wikia.nocookie.net/scribblenauts/images/4/42/Crash_Test_Dummy.png/revision/latest/scale-to-width-down/133?cb=20130309213400"
+          "http://pluspng.com/img-png/drum-hd-png-rusty-oil-drums-png-stock-by-roy3d-1024.png"
       }
     });
   };

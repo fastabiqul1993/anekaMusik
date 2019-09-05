@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
-import { Card, Button, Col } from "react-bootstrap";
+import { Card, Button, Col, Badge } from "react-bootstrap";
 
 class CardsCategory extends Component {
   render() {
-    const { name, img, id } = this.props.data;
+    const { name, img, id, qty } = this.props.data;
     return (
       <Fragment>
         <Col sm={3} className="card-col" style={{ padding: "1rem" }}>
@@ -27,9 +27,15 @@ class CardsCategory extends Component {
             />
             <Card.Body variant="dark">
               <Card.Title>{name}</Card.Title>
+              {qty > 0 ? (
+                <Badge variant="success">Wonten</Badge>
+              ) : (
+                <Badge variant="danger">Telas</Badge>
+              )}
               <Button
+                style={{ marginTop: "5px" }}
                 onClick={() => this.props.catDetail(id)}
-                variant="primary"
+                variant="info"
               >
                 Show details
               </Button>

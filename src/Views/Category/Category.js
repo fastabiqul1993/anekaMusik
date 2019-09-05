@@ -62,7 +62,8 @@ class Category extends Component {
   onChange = e => this.setState({ search: e.target.value });
 
   onNext = async () => {
-    const maxPaginate = Math.round(this.state.totalPage / 2);
+    const maxPaginate = Math.round(this.state.totalPage / 2 / 2);
+    console.log(maxPaginate);
     if (this.state.getPage < maxPaginate) {
       let nextPage = this.state.getPage + 1;
       await this.setState({ getPage: nextPage });
@@ -112,7 +113,7 @@ class Category extends Component {
           </Button>
           <Modals
             show={modalShow}
-            // fixproduct={this.getFixProduct}
+            fixproduct={this.getFixProduct}
             branchs={branchs}
             categories={categories}
             onHide={this.modalToggle}
