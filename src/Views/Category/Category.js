@@ -63,7 +63,6 @@ class Category extends Component {
 
   onNext = async () => {
     const maxPaginate = Math.round(this.state.totalPage / 2 / 2);
-    console.log(maxPaginate);
     if (this.state.getPage < maxPaginate) {
       let nextPage = this.state.getPage + 1;
       await this.setState({ getPage: nextPage });

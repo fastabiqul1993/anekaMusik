@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { getProductById } from "../../Redux/Action/product";
+import { getBranch } from "../../Redux/Action/branch";
 import { Redirect } from "react-router-dom";
 import { Button, Container, Col, Row, Form, Badge } from "react-bootstrap";
 import Search from "../../Components/Search/Search";
@@ -12,18 +13,26 @@ class ProductDetail extends Component {
   state = {
     detailProduct: {},
     branchName: "",
+    branches: [],
     newData: {},
     isRedirect: false
   };
 
   componentDidMount = async () => {
-    await this.props.dispatch(
-      getProductById(Number(this.props.match.params.id))
-    );
+    await this.props.dispatch(getBranch());
+    await this.updateWacher();
     this.setState({
-      detailProduct: this.props.data.productById,
+      branches: this.props.dataBranch.branchList,
       branchName: this.props.data.productById.Branch.name
     });
+  };
+
+  updateWacher = async () => {
+    await this.props
+      .dispatch(getProductById(Number(this.props.match.params.id)))
+      .then(() => {
+        this.setState({ detailProduct: this.props.data.productById });
+      });
   };
 
   onChange = e => {
@@ -35,8 +44,14 @@ class ProductDetail extends Component {
   };
 
   updateData = id => {
-    Axios.patch(`http://localhost:3000/product/${id}`, this.state.newData);
-    alert("Update success");
+    Axios.patch(`http://localhost:3000/product/${id}`, this.state.newData)
+      .then(() => {
+        this.updateWacher();
+        alert("Update success");
+      })
+      .catch(() => {
+        alert("Update failed");
+      });
   };
 
   remove = id => {
@@ -56,7 +71,11 @@ class ProductDetail extends Component {
           <Search history={this.props.history} />
           <Row>
             <Col md={3}>
-              <img src={detailProduct.img} style={{ maxWidth: "250px" }} />
+              <img
+                src={detailProduct.img}
+                style={{ maxWidth: "250px" }}
+                alt="detailImg"
+              />
             </Col>
             <Col style={{ height: "500px" }} md={{ offset: 1 }}>
               <Row>
@@ -97,12 +116,29 @@ class ProductDetail extends Component {
                         Branch
                       </Form.Label>
                       <Col sm="10">
-                        <Form.Control
+                        {/* <Form.Control
                           type="text"
                           placeholder={branchName}
                           name="branch"
                           onChange={this.onChange}
-                        />
+                        /> */}
+                        <Form.Control
+                          name="BranchId"
+                          placeholder="Select branch..."
+                          onChange={this.onChange}
+                          as="select"
+                        >
+                          <option>{branchName}</option>
+                          {this.state.branches.map(branch =>
+                            branch.name !== branchName ? (
+                              <option key={branch.id} value={branch.id}>
+                                {branch.name}
+                              </option>
+                            ) : (
+                              ""
+                            )
+                          )}
+                        </Form.Control>
                       </Col>
                     </Form.Group>
 
@@ -146,7 +182,8 @@ class ProductDetail extends Component {
 
 const mapStateToProps = state => {
   return {
-    data: state.Product
+    data: state.Product,
+    dataBranch: state.Branch
   };
 };
 

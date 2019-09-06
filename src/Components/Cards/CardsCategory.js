@@ -28,9 +28,9 @@ class CardsCategory extends Component {
             <Card.Body variant="dark">
               <Card.Title>{name}</Card.Title>
               {qty > 0 ? (
-                <Badge variant="success">Wonten</Badge>
+                <Badge variant="success">Available</Badge>
               ) : (
-                <Badge variant="danger">Telas</Badge>
+                <Badge variant="danger">Unavailable</Badge>
               )}
               <Button
                 style={{ marginTop: "5px" }}

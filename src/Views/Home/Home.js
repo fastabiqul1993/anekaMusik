@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { getCategory } from "../../Redux/Action/category";
-import { Button, Container, Row, Alert, Col } from "react-bootstrap";
+import { Container, Row, Alert, Col } from "react-bootstrap";
 
 import Search from "../../Components/Search/Search";
 import Cards from "../../Components/Cards/CardsHome";
@@ -40,13 +40,13 @@ class Home extends Component {
         <Container className="home">
           <Search history={this.props.history} />
           {/* Modal button */}
-          <Button
+          {/* <Button
             className="but-home"
             variant="warning"
             onClick={this.modalToggle}
           >
             Add new item
-          </Button>
+          </Button> */}
           {/* Modal */}
           <Modals
             show={modalShow}
